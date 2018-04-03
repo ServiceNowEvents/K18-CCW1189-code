@@ -1,0 +1,75 @@
+function($rootScope) {
+	var c = this;
+	  
+    /* Variable Declarations */
+	  //////////////////////////////////////////////////
+	  
+	  var activeCatId;
+	  
+    /* Utility Method */
+	  //////////////////////////////////////////////////
+	  
+	  function serverGet(action, payload) {
+		  return c.server.get({
+			  action: action,
+			  payload: payload
+		  });
+	  }
+	  
+    /* ng-if Conditions */
+	  //////////////////////////////////////////////////
+	  
+	  c.hasItems = function() {
+		  return c.data.items.list.length > 0;
+	  };
+	  
+	  c.hasMoreItems = function() {
+		  return c.hasItems() && c.data.items.nextIndex;
+	  };
+	  
+	  c.hasCategories = function() {
+		  return c.data.categories.length > 0;
+	  };
+	  
+	  c.hasConfigErrors = function() {
+		  return c.data.invalidConfigKeys.length > 0;
+	  };
+	  
+    /* Click Events */
+	  //////////////////////////////////////////////////
+	  
+	  c.changeCategory = function(category) {
+		  if (activeCatId === category.id) { return; }
+		  
+		  serverGet(c.data.actions.CHANGE_CAT, category.id).then(function(res) {
+			  c.data.items = res.data.items;
+			  
+			  c.data.categories.forEach(function(cat) {
+				  cat.active = false;
+			  });
+  
+			  category.active = true;
+			  activeCatId = category.id; 
+		  });
+	  };
+	  
+	  c.loadMore = function() {
+		  serverGet(c.data.actions.LOAD_MORE, {
+			  catId: activeCatId, 
+			  idx: c.data.items.nextIndex
+		  }).then(function(res) {
+			  res.data.items.list.forEach(function(item) {
+				  c.data.items.list.push(item);
+			  });
+			  
+			  c.data.items.nextIndex = res.data.items.nextIndex;
+		  });
+	  };
+	  
+	  c.onCardClick = function(item) {
+		  $rootScope.$broadcast(c.options.event_name, {
+			  options: c.options,
+			  data: item
+		  });
+	  };
+  }
