@@ -1,0 +1,146 @@
+$header-bg-color: $navbar-inverse-bg;
+$header-color: $navbar-inverse-link-color;
+$sec-color: $sp-navbar-divider-color;
+$title-color: $brand-primary;
+$footer-color: $text-color;
+$aside-width: 230px;
+$card-width: 380px;
+$img-height: 150px;
+$roundness: 5px;
+$fz-large: 18px;
+$spacing: 30px;
+$content-spacing: $spacing / 4;
+
+section.card-list-root {
+  display: flex;
+  margin-top: $spacing;
+  
+  aside {
+    min-width: $aside-width;
+    margin-right: $spacing;
+    
+    header {
+      background-color: $header-bg-color;
+      color: $header-color;
+      padding: $content-spacing;
+      border-color: $header-bg-color;
+    }
+    
+    ul {
+      width: $aside-width - 2;
+      margin-left: 1px;
+    }
+    
+    li {
+      padding: $content-spacing;
+      cursor: pointer;
+    }
+    
+    li.active {
+      background-color: $sec-color;
+    }
+  }
+  
+  section.main {
+    text-align: center;
+    width: 100%;
+  }
+  
+  ul {
+    padding: 0;
+    margin: 0;
+  }
+  
+  ul.items {
+    display: flex;
+    flex-wrap: wrap;
+    text-align: left;
+  }
+  
+  li {
+    list-style: none;
+  }
+  
+  li.item {
+    display: flex;
+    flex-direction: column;
+    width: $card-width;
+    margin: 0 $spacing ($spacing + 10) $spacing;
+    cursor: default;
+  }
+  
+  figure {
+    img {
+      width: 100%;
+      height: $img-height;
+      object-fit: cover;
+      background-color: $sec-color;
+    }
+    
+    figcaption {
+      padding: $content-spacing;
+      font-size: $fz-large;
+      color: $title-color;
+    }
+  }
+  
+  p {
+    flex-grow: 1;
+    margin: 0;
+    padding: $content-spacing;
+    padding-top: 0;
+    overflow: hidden;
+  }
+  
+  footer {
+    padding: $content-spacing;
+    color: $footer-color;
+  }
+  
+  div.error {
+    padding: $content-spacing;
+    
+    li {
+      display: inline;
+    }
+    
+    li + li:before {
+      content: ", ";
+    }
+  }
+  
+  .clickable {
+    cursor: pointer !important;
+  }
+  
+  .truncate {
+    width: $card-width;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .border-top {
+    border-top: 1px solid $sec-color;
+  }
+  
+  .border {
+    border: 1px solid $sec-color;
+  }
+  
+  .rounded {
+    border-radius: $roundness;
+  }
+  
+  .top {
+    border-bottom: none !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+  }
+  
+  .bottom {
+    border-top: none !important;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+  }
+}
