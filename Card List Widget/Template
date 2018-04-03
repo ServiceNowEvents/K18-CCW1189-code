@@ -1,0 +1,38 @@
+<section class="card-list-root">
+	<aside ng-if="c.hasItems() && c.hasCategories()">
+	  <header class="rounded border top">Categories</header>
+	  <ul class="rounded border bottom">
+		<li class="border-top" ng-repeat="cat in c.data.categories" 
+			ng-bind="::cat.name" ng-class="{active: cat.active}" ng-click="c.changeCategory(cat)"/>
+	  </ul>
+	</aside>
+	<section class="main">
+	  <ul class="items" ng-if="c.hasItems() && !c.hasConfigErrors()">
+		<li class="item rounded border" ng-repeat="item in c.data.items.list" 
+			ng-click="c.onCardClick(item)" ng-class="{clickable: c.options.event_name}"
+			ng-init="name = item.name; desc = item.desc; sec_text = item.sec_text">
+		  <figure>
+			<img class="rounded top" ng-src="{{::item.image}}"/>
+			<figcaption class="truncate" ng-bind="name" ng-if="name"></figcaption>
+		  </figure>
+		  <p ng-bind="desc | sanitize | characters:120" ng-if="desc"/>
+		  <footer class="border-top" ng-bind="sec_text" ng-if="sec_text"/>
+		</li>
+	  </ul>
+	  <button class="btn btn-primary" ng-if="c.hasMoreItems() && !c.hasConfigErrors()" ng-click="c.loadMore()">Load More</button>
+	  <div class="error rounded border" ng-if="c.hasConfigErrors()">
+		<h4>
+		  You have either invalid configuration or missing values in the following instance options. 
+		  Please resolve them in order to continue.
+		</h4>
+		<ul>
+		  <li ng-repeat="opt in c.data.invalidConfigKeys" ng-bind="opt"/>
+		</ul>
+	  </div>
+	  <div class="error rounded border" ng-if="!c.hasItems() && !c.hasConfigErrors()">
+		<h4>
+		  There are no items available at this time.
+		</h4>
+	  </div>
+	</section>
+  </section>
