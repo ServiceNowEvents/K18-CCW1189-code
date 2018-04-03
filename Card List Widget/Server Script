@@ -1,0 +1,152 @@
+(function() {
+	data.actions = {
+		CHANGE_CAT: 'CHANGE_CAT',
+		LOAD_MORE: 'LOAD_MORE'
+	};
+	
+	data.categories = [];
+	data.items = {list: []};
+	data.invalidConfigKeys = [];
+	
+	/* constants */
+	//////////////////////////////////////////////////
+	
+	var FLD_ID = 'sys_id';
+	var MAX_ITEM_LIMIT = options.u_maximum_results < 0 ? 4 : options.u_maximum_results;
+	
+	var TBL_ITEMS = options.table;
+	var QRY_ITEMS = options.filter;
+	var FLD_ITEM_NAME = options.display_field;
+	var FLD_ITEM_DESC = options.u_description;
+	var FLD_ITEM_SEC_TEXT = options.u_secondary_text;
+	var FLD_ITEM_CAT = options.u_category;
+	var FLD_ITEM_IMG = options.u_image;
+	
+	/* Function Declarations */
+	//////////////////////////////////////////////////
+	
+	function addFilter(gr) {
+		if (QRY_ITEMS) { gr.addEncodedQuery(QRY_ITEMS); }
+		
+		catalog = $sp.getValue('sc_catalog');
+		gr.addEncodedQuery('sc_catalogsLIKE' + catalog);
+	}
+	
+	function getCardItems(catId, idx) {
+		var gr = new GlideRecord(TBL_ITEMS);
+		addFilter(gr);
+		
+		if (catId) {
+			gr.addQuery(FLD_ITEM_CAT, catId);
+		}
+		
+		idx = idx || 0;
+		var nextIndex = idx + MAX_ITEM_LIMIT;
+		gr.chooseWindow(idx, nextIndex);
+		gr.query();
+		
+		var items = {list: []};
+		
+		while(gr.next()) {
+			var item = {
+				id: gr.getValue(FLD_ID),
+				category: gr.getValue(FLD_ITEM_CAT),
+				image: gr.getDisplayValue(FLD_ITEM_IMG)
+			};
+			
+			if (FLD_ITEM_NAME) { item.name = gr.getDisplayValue(FLD_ITEM_NAME); }
+			if (FLD_ITEM_DESC) { item.desc = gr.getDisplayValue(FLD_ITEM_DESC); }
+			if (FLD_ITEM_SEC_TEXT) { item.sec_text = gr.getDisplayValue(FLD_ITEM_SEC_TEXT); }
+			
+			items.list.push(item);
+		}
+		
+		if (gr.getRowCount() > nextIndex) {
+			items.nextIndex = nextIndex;
+		}
+
+		return items;
+	}
+	
+	function changeCategory(catId) {
+		data.items = getCardItems(catId);
+	}
+	
+	function loadMore(req) {
+		data.items = getCardItems(req.catId, req.idx);
+	}
+	
+	/* Action Handler */
+	//////////////////////////////////////////////////
+	
+	var handlers = {};
+	handlers[data.actions.CHANGE_CAT] = changeCategory;
+	handlers[data.actions.LOAD_MORE] = loadMore;
+	
+	function actionHandler(action) {
+		action = (action || '').trim();
+		if (!action) {
+			throw 'valid action was not provided';
+		}
+
+		var handler = handlers[action];
+		if (typeof handler !== 'function') {
+			throw action + ' is not a valid action';
+		}
+
+		return handler;
+	}
+	
+	/* Partial Server Script Execution */
+	//////////////////////////////////////////////////
+	
+	if (input) { // client is requesting updates
+		actionHandler(input.action)(input.payload);
+		return;
+	}
+	
+	/* Instance Options Validation */
+	//////////////////////////////////////////////////
+	
+	var opts = [];
+	opts.push({value: TBL_ITEMS, key: 'Table'});
+	opts.push({value: FLD_ITEM_IMG, key: 'Image'});
+	
+	for (var i = 0; i < opts.length; i++) {
+		var o = opts[i];
+		if (o.value) { continue; }
+		data.invalidConfigKeys.push(o.key);
+	}
+	
+	if (data.invalidConfigKeys.length > 0) {
+		return; // invalid configuration, return
+	}
+	
+	/* First Time Script Execution */
+	//////////////////////////////////////////////////
+	
+	
+	/* Get Cards */
+	data.items = getCardItems();
+	
+	/* Get Categories */
+	var ga = new GlideAggregate(TBL_ITEMS);
+	addFilter(ga);
+	
+	ga.addAggregate('COUNT', FLD_ITEM_CAT);
+	ga.query();
+	
+	while(ga.next()) {
+		var cat = ga[FLD_ITEM_CAT];
+		var name = cat.getDisplayValue();
+		if (!name) { continue; }
+		data.categories.push({
+			id: cat.getValue(FLD_ID),
+			name: name
+		});
+	}
+	
+	if (data.categories.length > 0) {
+		data.categories.unshift({name: 'All', active: true});
+	}
+})();
