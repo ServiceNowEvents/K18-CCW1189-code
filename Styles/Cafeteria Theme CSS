@@ -1,0 +1,24 @@
+$grid-gutter-width: 15px !default;
+$text-color: #1C2321;
+$text-muted: #777777;
+$link-color: $brand-primary;
+$sp-navbar-divider-color: #E6E8EA;
+.panel-heading {
+    background-color: $navbar-inverse-bg;
+    color: $sp-navbar-divider-color;
+}
+$navbar-inverse-link-color: #ffffff;
+
+.hero-img {
+        height: 500px;
+        background-image-url: $background-image-url;
+}
+
+section.page main.body {
+padding:0;
+
+}
+
+nav.navbar-inverse {
+border:0;
+}
