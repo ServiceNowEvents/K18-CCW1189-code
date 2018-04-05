@@ -21,6 +21,7 @@
 	var FLD_ITEM_NAME = options.display_field;
 	var FLD_ITEM_DESC = options.u_description;
 	var FLD_ITEM_SEC_TEXT = options.u_secondary_text;
+	var FLD_ITEM_SEC_TEXT_LABEL = getLabelFromFieldName(options.table, options.u_secondary_text);
 	var FLD_ITEM_CAT = options.u_category;
 	var FLD_ITEM_IMG = options.u_image;
 	
@@ -32,7 +33,7 @@
 		if (!QRY_SCRIPT_API || !QRY_SCRIPT_FUNC) { return; }
 		
 		try {
-			var api = new global[QRY_SCRIPT_API];
+			var api = new global[QRY_SCRIPT_API]();
 			var query = api[QRY_SCRIPT_FUNC]();
 			if (!query) { return; }
 			gr.addEncodedQuery(query);
@@ -65,7 +66,11 @@
 			
 			if (FLD_ITEM_NAME) { item.name = gr.getDisplayValue(FLD_ITEM_NAME); }
 			if (FLD_ITEM_DESC) { item.desc = gr.getDisplayValue(FLD_ITEM_DESC); }
-			if (FLD_ITEM_SEC_TEXT) { item.sec_text = gr.getDisplayValue(FLD_ITEM_SEC_TEXT); }
+			if (FLD_ITEM_SEC_TEXT) { 
+					item.sec_text = FLD_ITEM_SEC_TEXT_LABEL ? 
+						(FLD_ITEM_SEC_TEXT_LABEL + ': ' + gr.getDisplayValue(FLD_ITEM_SEC_TEXT)) : 
+						gr.getDisplayValue(FLD_ITEM_SEC_TEXT); 
+				 }
 			
 			items.list.push(item);
 		}
@@ -83,6 +88,17 @@
 	
 	function loadMore(req) {
 		data.items = getCardItems(req.catId, req.idx);
+	}
+	
+	function getLabelFromFieldName(tableName, fieldName){
+		if(!fieldName || !tableName){
+			return;
+		}
+		var gr = new GlideRecord(tableName);
+		gr.setLimit(1);
+		gr.query();
+		gr.next();
+		return gr[fieldName].getLabel();
 	}
 	
 	//////////////////////////////////////////////////
