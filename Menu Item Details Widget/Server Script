@@ -1,1 +1,40 @@
+(function() {
+	data.actions = {
+		ADD_ITEM_TO_CART: 'ADD_ITEM_TO_CART'
+	};
+	
+	//////////////////////////////////////////////////
+	
+	var cart = new sn_sc.CartJS('DEFAULT', '' + gs.getUser().getID());
+	
+	//////////////////////////////////////////////////
+	
+	function addItemToCart(itemId) {
+		cart.addToCart({sysparm_id: itemId});
+	}
+	
+	//////////////////////////////////////////////////
+	
+	var handlers = {};
+	handlers[data.actions.ADD_ITEM_TO_CART] = addItemToCart;
+	
+	function actionHandler(action) {
+		action = (action || '').trim();
+		if (!action) {
+			throw 'valid action was not provided';
+		}
 
+		var handler = handlers[action];
+		if (typeof handler !== 'function') {
+			throw action + ' is not a valid action';
+		}
+
+		return handler;
+	}
+	
+	//////////////////////////////////////////////////
+	
+	if (input) { // client is requesting updates
+		actionHandler(input.action)(input.payload);
+	}
+})();
