@@ -19,7 +19,8 @@ function($rootScope) {
 	  
 	  //////////////////////////////////////////////////
 	  
-	  c.hide = function() {
+	  c.hide = function(event) {
+		  if (event && event.target !== event.currentTarget) { return; }
 		  c.visible = false;
 	  };
 	  
@@ -35,4 +36,3 @@ function($rootScope) {
 		  showItemDetail(item);
 	  });
   }
- 
