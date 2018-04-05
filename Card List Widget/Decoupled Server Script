@@ -8,28 +8,37 @@
 	data.items = {list: []};
 	data.invalidConfigKeys = [];
 	
-  /* constants */
 	//////////////////////////////////////////////////
-  
+	
+	// constants
 	var FLD_ID = 'sys_id';
 	var MAX_ITEM_LIMIT = options.u_maximum_results < 0 ? 4 : options.u_maximum_results;
 	
 	var TBL_ITEMS = options.table;
 	var QRY_ITEMS = options.filter;
+	var QRY_SCRIPT_API = options.u_dynamic_filter_script_name;
+	var QRY_SCRIPT_FUNC = options.u_dynamic_filter_method_name;
 	var FLD_ITEM_NAME = options.display_field;
 	var FLD_ITEM_DESC = options.u_description;
 	var FLD_ITEM_SEC_TEXT = options.u_secondary_text;
 	var FLD_ITEM_CAT = options.u_category;
 	var FLD_ITEM_IMG = options.u_image;
 	
-  /* Function Declarations */
 	//////////////////////////////////////////////////
 	
 	function addFilter(gr) {
 		if (QRY_ITEMS) { gr.addEncodedQuery(QRY_ITEMS); }
 		
-		catalog = $sp.getValue('sc_catalog');
-		gr.addEncodedQuery('sc_catalogsLIKE' + catalog);
+		if (!QRY_SCRIPT_API || !QRY_SCRIPT_FUNC) { return; }
+		
+		try {
+			var api = new global[QRY_SCRIPT_API];
+			var query = api[QRY_SCRIPT_FUNC]();
+			if (!query) { return; }
+			gr.addEncodedQuery(query);
+		} catch(e) { 
+			// unable to process dynamic script
+		}
 	}
 	
 	function getCardItems(catId, idx) {
@@ -76,7 +85,6 @@
 		data.items = getCardItems(req.catId, req.idx);
 	}
 	
-  /* Action Handler */
 	//////////////////////////////////////////////////
 	
 	var handlers = {};
@@ -97,7 +105,6 @@
 		return handler;
 	}
 	
-  /* Partial Server Script Execution */
 	//////////////////////////////////////////////////
 	
 	if (input) { // client is requesting updates
@@ -105,11 +112,11 @@
 		return;
 	}
 	
-  /* Instance Options Validation */
 	//////////////////////////////////////////////////
 	
 	var opts = [];
 	opts.push({value: TBL_ITEMS, key: 'Table'});
+	opts.push({value: FLD_ITEM_CAT, key: 'Category'});
 	opts.push({value: FLD_ITEM_IMG, key: 'Image'});
 	
 	for (var i = 0; i < opts.length; i++) {
@@ -122,14 +129,13 @@
 		return; // invalid configuration, return
 	}
 	
-  /* First Time Script Execution */
 	//////////////////////////////////////////////////
 	
 	
-	/* Get Cards */
+	// get card items
 	data.items = getCardItems();
 	
-	/* Get Categories */
+	// get categories for card items
 	var ga = new GlideAggregate(TBL_ITEMS);
 	addFilter(ga);
 	
