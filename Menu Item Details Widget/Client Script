@@ -1,1 +1,37 @@
-
+function($rootScope) {
+	var c = this;
+	  
+	  //////////////////////////////////////////////////
+	  
+	  function serverGet(action, payload) {
+		  return c.server.get({
+			  action: action,
+			  payload: payload
+		  });
+	  }
+	  
+	  //////////////////////////////////////////////////
+	  
+	  function showItemDetail(item) {
+		  c.item = item.data;
+		  c.visible = true;
+	  }
+	  
+	  //////////////////////////////////////////////////
+	  
+	  c.hide = function() {
+		  c.visible = false;
+	  };
+	  
+	  c.addItemToCart = function() {
+		  serverGet(c.data.actions.ADD_ITEM_TO_CART, c.item.id).then(function(res) {
+			  c.hide();
+		  });
+	  };
+	  
+	  //////////////////////////////////////////////////
+	  
+	  $rootScope.$on('K18_MenuItemClicked', function(event, item) {
+		  showItemDetail(item);
+	  });
+  }
