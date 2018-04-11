@@ -3,16 +3,19 @@
 		ADD_ITEM_TO_CART: 'ADD_ITEM_TO_CART'
 	};
 	
+	/* Using the CartJS Scriptable Endpoint */
 	//////////////////////////////////////////////////
 	
 	var cart = new sn_sc.CartJS('DEFAULT', '' + gs.getUser().getID());
 	
+	/* Add Item to Cart Using CartJS Scriptable Method */
 	//////////////////////////////////////////////////
 	
 	function addItemToCart(itemId) {
 		cart.addToCart({sysparm_id: itemId});
 	}
 	
+	/* Routes Actions to Methods on the Server Script */
 	//////////////////////////////////////////////////
 	
 	var handlers = {};
@@ -32,6 +35,7 @@
 		return handler;
 	}
 	
+	/* Server Script execution when there is user input. Nothing happens on inital load.  */
 	//////////////////////////////////////////////////
 	
 	if (input) { // client is requesting updates
