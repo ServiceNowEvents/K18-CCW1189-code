@@ -1,1 +1,4 @@
-
+.hero-img {
+        height: 500px;
+        background-image-url: $background-image-url;
+}
