@@ -9,11 +9,6 @@ $sp-navbar-divider-color: #E6E8EA;
 }
 $navbar-inverse-link-color: #ffffff;
 
-.hero-img {
-        height: 500px;
-        background-image-url: $background-image-url;
-}
-
 section.page main.body {
 padding:0;
 
