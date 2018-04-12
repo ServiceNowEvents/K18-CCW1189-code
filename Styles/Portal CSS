@@ -2,16 +2,13 @@
 
 $navbar-inverse-bg: #343D47;
 $brand-primary: #348d8e;
-$background-image-url: {placeholder};
 
 ----Singapore Portal CSS----
 
 $navbar-inverse-bg: #1D3236;
 $brand-primary: #B4BD4B;
-$background-image-url: {placeholder};
 
 ----South Korea Portal CSS----
 
 $navbar-inverse-bg: #000000;
 $brand-primary: #9E2428;
-$background-image-url: {placeholder};
