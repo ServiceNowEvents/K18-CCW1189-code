@@ -2,14 +2,6 @@ $hero-primary-msg: "Now University - Healthy Body, Happy Mind" !default;
 $hero-secondary-msg: "Order Below!" !default;
 $hero-bg: "/sdheroimg.png" !default;
 
-body .padding-top {
-    padding-top: 0 !important;
-}
-
-.navbar {
-    border-bottom: none !important;
-}
-
 .hero-bg {
     background: linear-gradient( rgba(0, 0, 0, .6), rgba(0, 0, 0, .5) ), url($hero-bg);
     background-size: cover;
