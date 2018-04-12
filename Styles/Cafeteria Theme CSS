@@ -9,11 +9,10 @@ $sp-navbar-divider-color: #E6E8EA;
 }
 $navbar-inverse-link-color: #ffffff;
 
-section.page main.body {
-padding:0;
-
+body .padding-top {
+    padding-top: 0 !important;
 }
 
-nav.navbar-inverse {
-border:0;
+.navbar {
+    border-bottom: none !important;
 }
