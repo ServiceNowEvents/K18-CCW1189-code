@@ -1,4 +1,35 @@
-.hero-img {
-        height: 500px;
-        background-image-url: $background-image-url;
+$hero-primary-msg: "Now University - Healthy Body, Happy Mind" !default;
+$hero-secondary-msg: "Order Below!" !default;
+$hero-bg: "/sdheroimg.png" !default;
+
+body .padding-top {
+    padding-top: 0 !important;
+}
+
+.navbar {
+    border-bottom: none !important;
+}
+
+.hero-bg {
+    background: linear-gradient( rgba(0, 0, 0, .6), rgba(0, 0, 0, .5) ), url($hero-bg);
+    background-size: cover;
+    background-position: center;
+    height: 400px;
+}
+
+.hero-bg:before {
+    content: $hero-primary-msg !important;
+    color: #fff;
+    font-size: 28px;
+    font-weight: 600;
+    padding: 150px 0 0 100px;
+    letter-spacing: 1px;
+}
+
+.hero-bg:after {
+    content: $hero-secondary-msg !important;
+    color: #fff;
+    font-size: 28px;
+    letter-spacing: 1px;
+    padding-left: 100px;
 }
