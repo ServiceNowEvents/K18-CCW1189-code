@@ -1,0 +1,17 @@
+---- San Diego Cafeteria ----
+
+$hero-primary-msg: "Welcome to Now University - San Diego";
+$hero-secondary-msg: "Fuel for your beach bod";
+$hero-bg: "/sdheroimg.png";
+
+---- Singapore Cafeteria -----
+
+$hero-primary-msg: "Welcome to Now University - Singapore";
+$hero-secondary-msg: "Purveyors of the finest Asian fare";
+$hero-bg: "/singheroimg.png";
+
+---- South Korea Cafeteria ----
+
+$hero-primary-msg: "Welcome to Now University - South Korea";
+$hero-secondary-msg: "Spice up your day";
+$hero-bg: "/skheroimg.png";
