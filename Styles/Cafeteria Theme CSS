@@ -1,3 +1,5 @@
+$navbar-inverse-bg: #22273C !default;
+$sp-navbar-divider-color: #455464 !default;
 $grid-gutter-width: 15px !default;
 $text-color: #1C2321;
 $text-muted: #777777;
