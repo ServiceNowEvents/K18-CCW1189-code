@@ -3,12 +3,24 @@
 $navbar-inverse-bg: #343D47;
 $brand-primary: #348d8e;
 
+$hero-primary-msg: "Welcome to Now University - San Diego";
+$hero-secondary-msg: "Fuel for your beach bod";
+$hero-bg: "/sdheroimg.png";
+
 ----Singapore Portal CSS----
 
 $navbar-inverse-bg: #1D3236;
 $brand-primary: #B4BD4B;
 
+$hero-primary-msg: "Welcome to Now University - Singapore";
+$hero-secondary-msg: "Purveyors of the finest Asian fare";
+$hero-bg: "/singheroimg.png";
+
 ----South Korea Portal CSS----
 
 $navbar-inverse-bg: #000000;
 $brand-primary: #9E2428;
+
+$hero-primary-msg: "Welcome to Now University - South Korea";
+$hero-secondary-msg: "Spice up your day";
+$hero-bg: "/skheroimg.png";
